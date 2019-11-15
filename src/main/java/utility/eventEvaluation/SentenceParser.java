@@ -30,9 +30,6 @@ public class SentenceParser {
         Parse p = topParse[0];
         int sizeNP = p.getChildren()[0].getChildren()[1].getChildren()[1].getChildCount();
 
-        //System.out.println("----"+p.getChildren()[0].getChildren()[1].getChildren()[1].getType());
-        //System.out.println("----"+p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString());
-        //System.out.println((p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equalsIgnoreCase("message.")));
         if (p.getChildren()[0].getChildren()[1].getChildren()[1].getType().equals("NP") && (p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message") || p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message."))) {
 
             return 1;
