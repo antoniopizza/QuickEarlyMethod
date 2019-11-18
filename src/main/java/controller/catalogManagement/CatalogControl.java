@@ -17,7 +17,7 @@ public class CatalogControl {
         this.catalogView = catalogView;
     }
 
-    public void addCatalogErrorMessage() throws IOException {
+    public void addCatalogErrorMessage(String sinomimo) throws IOException {
         objectInputStream = catalog.getCatalogErrorMessage();
     }
 }
