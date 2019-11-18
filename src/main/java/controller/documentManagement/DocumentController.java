@@ -26,7 +26,7 @@ public class DocumentController {
         this.tableView = new TableView();
         this.tableController = new TableController(this.table, this.tableView);
 
-        tableController.getCFp();
+        //tableController.getCFp();
     }
 
 }

@@ -4,6 +4,7 @@ import controller.quickEarlyMethod.QuickEarlyController;
 import model.documentManagement.Table;
 import model.quickEarlyMethod.QuickEarlyMethod;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 import view.documentManagement.TableView;
 import view.quickEarlyMethod.QuickEarlyView;
 
@@ -20,14 +21,17 @@ public class TableController {
     private QuickEarlyMethod quickEarlyMethod = null;
     private QuickEarlyView quickEarlyView= null;
     private QuickEarlyController quickEarlyController = null;
+    private XWPFTable useCase = null;
 
     public TableController(Table table, TableView tableView) {
         this.table = table;
         this.tableView = tableView;
     }
 
-    public String getUseCase() {
-        return table.getUseCase();
+    public void getUsaCase() { useCase = table.getUseCase();}
+
+    public String getUseCaseName() {
+        return table.getUseCaseName();
     }
 
     public String getActors() {
@@ -39,7 +43,7 @@ public class TableController {
     public String getPrecondition() {
 
         System.out.println("-- Pre-condition");
-        return table.getPrecondition();
+        return table.getPreConditions();
     }
 
     public String getExtensionPoint() {
@@ -60,11 +64,15 @@ public class TableController {
         System.out.println("Error scenario");
         return table.getErrorScenarios(); }
 
-    public void printUseCase() { tableView.printData("Use Case", table.getUseCase()); }
+    public void setUseCaseName() {
+        table.setUseCaseName(useCase.getRow(0).getCell(1).getText());
+    }
+    public void printUseCase() { tableView.printData("Use Case", table.getUseCaseName()); }
+
 
     public void printActors() { tableView.printData("Actors", table.getActors()); }
 
-    public void printPreconditions() { tableView.printData("Preconditions", table.getPrecondition()); }
+    public void printPreconditions() { tableView.printData("Preconditions", table.getPreConditions()); }
 
     public void printExtensionPoint() { tableView.printData("Extension Point", table.getExtensionPoint()); }
 
@@ -72,12 +80,12 @@ public class TableController {
 
     public void printMainScenario() {
         mainScenario = new ArrayList<String>();
-        int sizeMainScenario = table.getTables().get(0).getRow(6).getCell(0).getParagraphs().size();
-        XWPFParagraph paragraph = table.getTables().get(0).getRow(6).getCell(0).getParagraphArray(1);
+        int sizeMainScenario = table.getUseCase().getRow(6).getCell(0).getParagraphs().size();
+        XWPFParagraph paragraph = table.getUseCase().getRow(6).getCell(0).getParagraphArray(1);
 
         System.out.println("Main Scenarios");
         for (int i = 0; i<sizeMainScenario; i++) {
-            tableView.printData(i+"", table.getTables().get(0).getRow(6).getCell(0).getParagraphArray(i).getText());
+            tableView.printData(i+"", table.getUseCase().getRow(6).getCell(0).getParagraphArray(i).getText());
         }
     }
 
@@ -85,8 +93,8 @@ public class TableController {
         errorScenarios = new ArrayList<String>();
 
         System.out.println("Error Scenarios");
-        for(int i = 8; i< (table.getTables().get(0).getRows().size()); i=i+2) {
-            tableView.printData(i+"", table.getTables().get(0).getRow(i).getCell(1).getText());
+        for(int i = 8; i< (table.getUseCase().getRows().size()); i=i+2) {
+            tableView.printData(i+"", table.getUseCase().getRow(i).getCell(1).getText());
         }
     }
 
@@ -96,7 +104,7 @@ public class TableController {
         this.quickEarlyController = new QuickEarlyController(quickEarlyMethod, quickEarlyView);
 
         System.out.println("Estrapolo:");
-        this.quickEarlyController.sizeCFp(table.getPrecondition(), table.getExtensionPoint(), table.getGeneralizationOf(), table.getMainScenario(), table.getErrorScenarios());
+        this.quickEarlyController.sizeCFp(table.getPreConditions(), table.getExtensionPoint(), table.getGeneralizationOf(), table.getMainScenario(), table.getErrorScenarios());
 
 
     }
