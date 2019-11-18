@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Table {
+public class UseCase {
 
     private List<XWPFTable> tables = null;
     //private String pathName = null;
@@ -91,7 +91,7 @@ public class Table {
         this.tables = doc.getTables();
     }*/
 
-    public Table(XWPFDocument doc) {
+    public UseCase(XWPFDocument doc) {
         this.doc = doc;
         this.tables = doc.getTables();
         initialize();
@@ -109,15 +109,17 @@ public class Table {
         this.generalizationOf = tables.get(0).getRow(3).getCell(1).getText();
 
         //Main Scenarios
+        mainScenario = new ArrayList<String>();
         int numberOfItem = tables.get(0).getRow(6).getCell(0).getParagraphs().size();
         //XWPFParagraph paragraph = tables.get(0).getRow(6).getCell(0).getParagraphArray(1);
 
         for (int i=0; i<numberOfItem; i++) {
-            this.mainScenario.add(tables.get(0).getRow(6).getCell(0).getParagraphArray(i).getText());
             //System.out.println(i+1 +" - "+tables.get(0).getRow(6).getCell(0).getParagraphArray(i).getText());
+            this.mainScenario.add(tables.get(0).getRow(6).getCell(0).getParagraphArray(i).getText());
         }
 
         //Error Scenarios
+        errorScenarios = new ArrayList<String>();
         int sizeScenario = tables.get(0).getRows().size();
 
         for(int i=8; i<sizeScenario; i=i+2) {

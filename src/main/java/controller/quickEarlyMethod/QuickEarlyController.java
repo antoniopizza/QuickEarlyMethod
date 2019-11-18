@@ -1,5 +1,6 @@
 package controller.quickEarlyMethod;
 
+import model.documentManagement.UseCase;
 import model.quickEarlyMethod.QuickEarlyMethod;
 import opennlp.tools.postag.POSSample;
 import opennlp.tools.tokenize.WhitespaceTokenizer;
@@ -8,7 +9,6 @@ import utility.eventEvaluation.SentenceParser;
 import view.quickEarlyMethod.QuickEarlyView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class QuickEarlyController {
 
@@ -37,20 +37,24 @@ public class QuickEarlyController {
         return quickEarlyMethod.getTags();
     }
 
-    public void sizeCFp(String preconditions, String extensionPointOf, String generalizationOf, ArrayList<String> mainScenario, ArrayList<String> errorScenarios) throws IOException {
+   /* public void sizeCFp(Table useCase) {
+        int prec = (useCase.getPreConditions().equals("N/A")) ? 0 : 0;
+    }*/
+
+    public void sizeCFp() throws IOException {
         System.out.println("Conteggio:");
         System.out.println("-- Precondition");
-        int prec = (preconditions.equals("N/A")) ? 0 : 0;
+        int prec = (quickEarlyMethod.getUseCase().getPreConditions().equals("N/A")) ? 0 : 0;
         System.out.println("-- Extension Point");
-        int exten = (extensionPointOf.equals("N/A")) ? 0 : 1;
+        int exten = (quickEarlyMethod.getUseCase().getExtensionPoint().equals("N/A")) ? 0 : 1;
         System.out.println("-- Generalization");
-        int gen = (generalizationOf.equals("N/A")) ? 0 : 1;
+        int gen = (quickEarlyMethod.getUseCase().getGeneralizationOf().equals("N/A")) ? 0 : 1;
         int main = 0; //da verificare
         int err = 0; //da verificare
         boolean flag = false;
 
         System.out.println("-- Main Scenario");
-        for(String flowEvent : mainScenario) {
+        for(String flowEvent : quickEarlyMethod.getUseCase().getMainScenario()) {
             String sentences[] = quickEarlyMethod.getDetectorME().sentDetect(flowEvent);
             WhitespaceTokenizer whitespaceTokenizer = WhitespaceTokenizer.INSTANCE;
             String tokens[] = whitespaceTokenizer.tokenize(sentences[0]);

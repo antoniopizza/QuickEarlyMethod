@@ -1,7 +1,7 @@
 package controller.documentManagement;
 
 import model.documentManagement.Document;
-import model.documentManagement.Table;
+import model.documentManagement.UseCase;
 import view.documentManagement.DocumentView;
 import view.documentManagement.TableView;
 
@@ -12,19 +12,24 @@ public class DocumentController {
 
     private Document document = null;
     private DocumentView documentView = null;
-    private Table table = null;
+    private UseCase useCase = null;
     private TableView tableView = null;
-    private TableController tableController = null;
+    private UseCaseController useCaseController = null;
 
-    public DocumentController(Document document, DocumentView documentView) {
+    public DocumentController(Document document, DocumentView documentView) throws IOException {
         this.document = document;
         this.documentView = documentView;
+        initializeUseCase();
     }
 
-    public void getUseCase() throws IOException {
-        this.table = new Table(document.getDocument());
+    public UseCase getUseCase() {
+        return useCaseController.getUseCase();
+    }
+
+    public void initializeUseCase() throws IOException {
+        this.useCase = new UseCase(document.getDocument());
         this.tableView = new TableView();
-        this.tableController = new TableController(this.table, this.tableView);
+        this.useCaseController = new UseCaseController(this.useCase, this.tableView);
 
         //tableController.getCFp();
     }

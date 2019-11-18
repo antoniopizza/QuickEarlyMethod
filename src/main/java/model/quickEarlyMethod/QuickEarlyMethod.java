@@ -1,17 +1,14 @@
 package model.quickEarlyMethod;
 
-import controller.documentManagement.TableController;
-import model.documentManagement.Table;
+import model.documentManagement.UseCase;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
-import view.documentManagement.TableView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class QuickEarlyMethod {
 
@@ -25,6 +22,7 @@ public class QuickEarlyMethod {
     private String token[] = null;
     private String tags[] = null;
     private int CFp;
+    private UseCase useCase = null;
 
     public QuickEarlyMethod() throws IOException {
         this.inputStreamPOS = new FileInputStream("src/openNLP/en-pos-maxent.bin");
@@ -60,6 +58,14 @@ public class QuickEarlyMethod {
     public SentenceDetectorME getDetectorME() { return detectorME; }
 
     public POSTaggerME getTaggerME() { return taggerME; }
+
+    public void initializeUseCase(UseCase useCase) {
+        this.useCase = useCase;
+    }
+
+    public UseCase getUseCase() {
+        return useCase;
+    }
 
 
     /*public void getTag() {};

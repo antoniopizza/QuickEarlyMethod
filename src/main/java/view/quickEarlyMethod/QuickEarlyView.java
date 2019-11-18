@@ -6,8 +6,8 @@ public class QuickEarlyView {
 
     }
 
-    public void printCFp() {
-        System.out.println("Il numero di Cosmic Function Point è: ");
+    public void printCFp(int CFp) {
+        System.out.println("Il numero di Cosmic Function Point è: "+CFp);
     }
 
 
