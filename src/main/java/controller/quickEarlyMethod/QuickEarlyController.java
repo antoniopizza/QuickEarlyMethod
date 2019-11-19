@@ -8,7 +8,11 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import utility.eventEvaluation.SentenceParser;
 import view.quickEarlyMethod.QuickEarlyView;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
 
 public class QuickEarlyController {
 
@@ -51,10 +55,11 @@ public class QuickEarlyController {
         int gen = (quickEarlyMethod.getUseCase().getGeneralizationOf().equals("N/A")) ? 0 : 1;
         int main = 0; //da verificare
         int err = 0; //da verificare
-        boolean flag = false;
+        boolean flagDisplay = false;
 
         System.out.println("-- Main Scenario");
         for(String flowEvent : quickEarlyMethod.getUseCase().getMainScenario()) {
+            main++;
             String sentences[] = quickEarlyMethod.getDetectorME().sentDetect(flowEvent);
             WhitespaceTokenizer whitespaceTokenizer = WhitespaceTokenizer.INSTANCE;
             String tokens[] = whitespaceTokenizer.tokenize(sentences[0]);
@@ -72,6 +77,8 @@ public class QuickEarlyController {
                 main++;*/
 
             //System.out.println(sample.getSentence()[2]);
+
+           /* //IF FUNZIONANTE inizio
            if(!sample.getSentence()[0].equals("Include") && !sample.getSentence()[2].equals("displays") && !sample.getSentence()[2].equals("prompts") && !sample.getSentence()[2].equals("confirms")) {
                main++;
                //System.out.println("not include non displays");
@@ -96,11 +103,95 @@ public class QuickEarlyController {
                if (!sentenceParser.isActorConfirms())
                    main++;
            }
+           //IF FUNZIONANTE fine*/
+
+
+           boolean flag = false;
+
+            //PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF
+            ArrayList<String>  errorCatalog = new ArrayList<String>();
+            FileReader errorFileReader = new FileReader("ErrorMessageCatalog.txt");
+            BufferedReader errorBufferRead = new BufferedReader(errorFileReader);
+
+            ArrayList<String>  promptCatalog = new ArrayList<String>();
+            FileReader promptFileReader = new FileReader("PromptMessageCatalog.txt");
+            BufferedReader promptBufferRead = new BufferedReader(promptFileReader);
+
+            ArrayList<String> confirmCatalog = new ArrayList<String>();
+            FileReader confirmReader = new FileReader("ConfirmMessageCatalog.txt");
+            BufferedReader confirmBufferRead = new BufferedReader(confirmReader);
+
+            String errorString;
+            while(true){
+                errorString = errorBufferRead.readLine();
+                errorCatalog.add(errorString);
+                if(errorString == null) {
+                    break;
+                }
+            }
+
+            String promptString;
+            while(true){
+                promptString = promptBufferRead.readLine();
+                promptCatalog.add(promptString);
+                if(promptString == null) {
+                    break;
+                }
+            }
+
+            String confirmString;
+            while (true) {
+                confirmString = confirmBufferRead.readLine();
+                confirmCatalog.add(confirmString);
+                if(confirmString == null) {
+                    break;
+                }
+            }
+
+
+            if(sample.getSentence()[0].equals("Include")) {
+                main--;
+                flag = true;
+            }
+
+            if (!flag && !flagDisplay){
+                for(String a : errorCatalog) {
+                    if(sample.getSentence()[2].equals(a) && (sample.getSentence()[4].equals("error") || sample.getSentence()[4].equals("notification")) ) {
+                        //main--;
+                        flag = true;
+                        flagDisplay = true;
+                        break;
+                    }
+                }
+            }
+
+
+            if(!flag) {
+                for (String b : promptCatalog) {
+                    if (sample.getSentence()[2].equals(b)) {
+                        main--;
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!flag) {
+                for (String a : confirmCatalog) {
+                    if(sample.getSentence()[2].equals(a)) {
+                        main--;
+                        break;
+                    }
+                }
+            }
+
         }
+
+
 
         System.out.println("-- Error Scenario");
         //System.out.println(flag);
-        if (!flag)
+        if (!flagDisplay)
             err++;
 
         System.out.println("----- VALORI VARIABILI -----");
