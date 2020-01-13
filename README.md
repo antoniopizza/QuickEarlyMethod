@@ -6,3 +6,5 @@ Nel secondo metodo viene utilizzato un catalogo contente le parole/frasi chiavi 
 
 ## Analisi dei tempi di esecuzione
 ![Image description](https://github.com/antoniopizza/QuickEarlyMethod/blob/master/grafici/NLP.png)
+![Image description](https://github.com/antoniopizza/QuickEarlyMethod/blob/master/grafici/NoNLP.png)
+![Image description](https://github.com/antoniopizza/QuickEarlyMethod/blob/master/grafici/NLP%20vs%20NoNLP.png)
