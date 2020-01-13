@@ -5,3 +5,4 @@ Nel seguente progetto, sono stati progettati ed implementati due diversi metodi 
 Nel secondo metodo viene utilizzato un catalogo contente le parole/frasi chiavi che verranno confrontate con i diversi con gli input dati riducendo così i tempi di esecuzione.
 
 ## Analisi dei tempi di esecuzione
+![Image description](Utenti⁩/pizzatoyboy⁩/⁨Scrivania/NLP⁩)
