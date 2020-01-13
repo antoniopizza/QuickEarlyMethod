@@ -35,6 +35,14 @@ public class QuickEarlyMethod {
         this.CFp = 0;
     }
 
+    public void initCFp() {
+        CFp = 0;
+    }
+
+    public QuickEarlyMethod(String falsaStringa) {
+        this.CFp = 0;
+    }
+
     public String[] getSentences() { return sentences; };
     public void setSentences(String sentences[]) {
         this.sentences = sentences;

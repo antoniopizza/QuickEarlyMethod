@@ -1,0 +1,6 @@
+The system shows a error message
+The system displays a error message
+The system prompts the student to verify the deletion.
+The student confirms the deletion.
+The Admin confirms the addition.
+The system prompts the student to verify the addition.

@@ -8,10 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import utility.eventEvaluation.SentenceParser;
 import view.quickEarlyMethod.QuickEarlyView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class QuickEarlyController {
@@ -57,6 +54,46 @@ public class QuickEarlyController {
         int err = 0; //da verificare
         boolean flagDisplay = false;
 
+        ArrayList<String>  errorCatalog = new ArrayList<String>();
+        FileReader errorFileReader = new FileReader("catalog/ErrorMessageCatalog.txt");
+        BufferedReader errorBufferRead = new BufferedReader(errorFileReader);
+
+        ArrayList<String>  promptCatalog = new ArrayList<String>();
+        FileReader promptFileReader = new FileReader("catalog/PromptMessageCatalog.txt");
+        BufferedReader promptBufferRead = new BufferedReader(promptFileReader);
+
+        ArrayList<String> confirmCatalog = new ArrayList<String>();
+        FileReader confirmReader = new FileReader("catalog/ConfirmMessageCatalog.txt");
+        BufferedReader confirmBufferRead = new BufferedReader(confirmReader);
+
+        String errorString;
+        while(true){
+            errorString = errorBufferRead.readLine();
+            errorCatalog.add(errorString);
+            if(errorString == null) {
+                break;
+            }
+        }
+
+        String promptString;
+        while(true){
+            promptString = promptBufferRead.readLine();
+            promptCatalog.add(promptString);
+            if(promptString == null) {
+                break;
+            }
+        }
+
+        String confirmString;
+        while (true) {
+            confirmString = confirmBufferRead.readLine();
+            confirmCatalog.add(confirmString);
+            if(confirmString == null) {
+                break;
+            }
+        }
+
+
         System.out.println("-- Main Scenario");
         for(String flowEvent : quickEarlyMethod.getUseCase().getMainScenario()) {
             main++;
@@ -66,11 +103,12 @@ public class QuickEarlyController {
             String tags[] = quickEarlyMethod.getTaggerME().tag(tokens);
 
             POSSample sample = new POSSample(tokens, tags);
+            //System.out.println(sample.toString());
 
             /*if(sample.getSentence()[0].equals("Include") || sample.getSentence()[2].equals("displays") ) {
                 //System.out.println("ci sono");
-                if (sample.getSentence()[2].equals("displays") && !flag) {
-                    flag = true;
+                if (sample.getSentence()[2].equals("displays") && !flagControl) {
+                    flagControl = true;
                     main++;
                 }
             } else
@@ -85,9 +123,9 @@ public class QuickEarlyController {
            } else if(sample.getSentence()[2].equals("displays")) {
                //System.out.println("displays");
                SentenceParser sentenceParser = new SentenceParser(flowEvent);
-               if(sentenceParser.isDisplayMessage() == 1 && !flag) {
+               if(sentenceParser.isDisplayMessage() == 1 && !flagControl) {
                    main++;
-                   flag = true;
+                   flagControl = true;
                } else if(sentenceParser.isDisplayMessage() == 2)
                    main++;
                else if (sentenceParser.isDisplayMessage() == 3)
@@ -106,59 +144,23 @@ public class QuickEarlyController {
            //IF FUNZIONANTE fine*/
 
 
-           boolean flag = false;
+           boolean flagControl = false;
 
             //PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF PROVA IF
-            ArrayList<String>  errorCatalog = new ArrayList<String>();
-            FileReader errorFileReader = new FileReader("ErrorMessageCatalog.txt");
-            BufferedReader errorBufferRead = new BufferedReader(errorFileReader);
 
-            ArrayList<String>  promptCatalog = new ArrayList<String>();
-            FileReader promptFileReader = new FileReader("PromptMessageCatalog.txt");
-            BufferedReader promptBufferRead = new BufferedReader(promptFileReader);
-
-            ArrayList<String> confirmCatalog = new ArrayList<String>();
-            FileReader confirmReader = new FileReader("ConfirmMessageCatalog.txt");
-            BufferedReader confirmBufferRead = new BufferedReader(confirmReader);
-
-            String errorString;
-            while(true){
-                errorString = errorBufferRead.readLine();
-                errorCatalog.add(errorString);
-                if(errorString == null) {
-                    break;
-                }
-            }
-
-            String promptString;
-            while(true){
-                promptString = promptBufferRead.readLine();
-                promptCatalog.add(promptString);
-                if(promptString == null) {
-                    break;
-                }
-            }
-
-            String confirmString;
-            while (true) {
-                confirmString = confirmBufferRead.readLine();
-                confirmCatalog.add(confirmString);
-                if(confirmString == null) {
-                    break;
-                }
-            }
-
-
-            if(sample.getSentence()[0].equals("Include")) {
+            // caso ---> Include
+            if(sample.getSentence()[0].equalsIgnoreCase("Include")) {
                 main--;
-                flag = true;
+                flagControl = true;
             }
 
-            if (!flag && !flagDisplay){
+
+            //mostra una messaggio di errore o notifaca
+            if (!flagControl && !flagDisplay){
                 for(String a : errorCatalog) {
                     if(sample.getSentence()[2].equals(a) && (sample.getSentence()[4].equals("error") || sample.getSentence()[4].equals("notification")) ) {
                         //main--;
-                        flag = true;
+                        flagControl = true;
                         flagDisplay = true;
                         break;
                     }
@@ -166,17 +168,17 @@ public class QuickEarlyController {
             }
 
 
-            if(!flag) {
+            if(!flagControl) {
                 for (String b : promptCatalog) {
                     if (sample.getSentence()[2].equals(b)) {
                         main--;
-                        flag = true;
+                        flagControl = true;
                         break;
                     }
                 }
             }
 
-            if(!flag) {
+            if(!flagControl) {
                 for (String a : confirmCatalog) {
                     if(sample.getSentence()[2].equals(a)) {
                         main--;
@@ -224,5 +226,93 @@ public class QuickEarlyController {
         quickEarlyMethod.setCFp(cfp);
 
         System.out.println("La size funzionale in termini CFp è " + cfp);
+    }
+
+    public void sizeCFpNoNLP() throws IOException {
+
+        System.out.println("Conteggio:");
+        System.out.println("-- Precondition");
+        int prec = (quickEarlyMethod.getUseCase().getPreConditions().equals("N/A")) ? 0 : 0;
+        System.out.println("-- Extension Point");
+        int exten = (quickEarlyMethod.getUseCase().getExtensionPoint().equals("N/A")) ? 0 : 1;
+        System.out.println("-- Generalization");
+        int gen = (quickEarlyMethod.getUseCase().getGeneralizationOf().equals("N/A")) ? 0 : 1;
+        int main = 0; //da verificare
+        int err = 0; //da verificare
+        boolean flagDisplay = false;
+
+        ArrayList<String>  catalogNoNLP = new ArrayList<String>();
+        FileReader errorFileReader = new FileReader("catalog/catalogNoNlp.txt");
+        BufferedReader errorBufferRead = new BufferedReader(errorFileReader);
+
+        String errorString;
+        while(true){
+            errorString = errorBufferRead.readLine();
+            catalogNoNLP.add(errorString);
+            if(errorString == null) {
+                break;
+            }
+        }
+
+        System.out.println("-- Main Scenario");
+        for(String flowEvent : quickEarlyMethod.getUseCase().getMainScenario()) {
+            main++;
+
+            if (flowEvent.startsWith("Include")) {
+                System.out.println("Inizia con include? " + flowEvent.startsWith("Include"));
+                main--;
+            }
+            else {
+                for(String catalogNoNLPstring : catalogNoNLP) {
+                    if (flowEvent.equals(catalogNoNLPstring))
+                        main--;
+
+
+//                    if (flowEvent.equals("System displays a error message.") || flowEvent.equals("System shows a error message.") || flowEvent.equals("System displays a notification message.") || flowEvent.equals("System shows a notification message.2"))
+//                        flagDisplay = true;
+                }
+            }
+
+            if(flowEvent.startsWith("The system displays a notification message") || flowEvent.startsWith("The system displays a error message"))
+                flagDisplay = true;
+
+
+        }
+
+        if(!flagDisplay) {
+            err++;
+        }
+
+        System.out.println("----- VALORI VARIABILI -----");
+        System.out.println("precondition = " + prec);
+        System.out.println("extension = " + exten);
+        System.out.println("generalization = " + gen);
+        System.out.println("main = " + main);
+        System.out.println("error = " + err);
+
+        /*for (String errorFlow : errorScenarios) {
+            String sentences[] = quickEarlyMethod.getDetectorME().sentDetect(errorFlow);
+            WhitespaceTokenizer whitespaceTokenizer = WhitespaceTokenizer.INSTANCE;
+            String tokens[] = whitespaceTokenizer.tokenize(sentences[0]);
+            String tags[] = quickEarlyMethod.getTaggerME().tag(tokens);
+
+            POSSample sample = new POSSample(tokens, tags);
+            //for (int i = 0; i<tags.length; i++) {
+                if(!(sample.getTags()[0].equals("Include")) && !(sample.getSentence()[2].equals("displays"))) {
+                    System.out.println(sample.getSentence()[2]);
+                    err++;
+                }
+            //}
+        }*/
+
+
+        int cfp = prec + exten + gen + main + err;
+
+
+
+        quickEarlyMethod.setCFp(cfp);
+
+        System.out.println("La size funzionale in termini CFp è " + cfp);
+
     }
 }

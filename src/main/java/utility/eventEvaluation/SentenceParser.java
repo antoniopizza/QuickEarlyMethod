@@ -30,7 +30,7 @@ public class SentenceParser {
         Parse p = topParse[0];
         int sizeNP = p.getChildren()[0].getChildren()[1].getChildren()[1].getChildCount();
 
-        if (p.getChildren()[0].getChildren()[1].getChildren()[1].getType().equals("NP") && (p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message") || p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message."))) {
+        if (p.getChildren()[0].getChildren()[1].getChildren()[2].getType().equals("NP") && (p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[1].toString().equals("error") || p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[1].toString().equals("notification"))) {
 
             return 1;
         } else if (p.getChildren()[0].getChildren()[1].getChildren()[1].getType().equals("NP") && !(p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message") || p.getChildren()[0].getChildren()[1].getChildren()[1].getChildren()[sizeNP-1].toString().equals("message.")))
