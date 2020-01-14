@@ -30,6 +30,7 @@ public class MainPrincipale {
             String pathName3 = "deleteSchedule.docx";
             String pathName1 = "closeRegistration.docx";
             String pathName4 = "addRegistration.docx";
+            String pathName5 = "useCaseProva.docx";
 
 
 
@@ -39,7 +40,7 @@ public class MainPrincipale {
             long inizio = System.currentTimeMillis();
 
             //1500 casi d'uso
-            for (int i = 0; i < 550; i++) {
+            //for (int i = 0; i < 550; i++) {
 
                 //System.out.println("----- CloseRegistration.docx -----");
                 //System.out.println("\n");
@@ -95,7 +96,7 @@ public class MainPrincipale {
                 //System.out.println("----- NewRegistration.docx -----");
                 //System.out.println("\n");
 
-                Document document4 = new Document(pathName4);
+                Document document4 = new Document(pathName5);
                 DocumentView documentView4 = new DocumentView();
                 DocumentController documentController4 = new DocumentController(document4, documentView4);
                 quickEarlyMethod1.initCFp();
@@ -108,7 +109,7 @@ public class MainPrincipale {
                 //System.out.println("\n");
 
 
-            }
+            //}
 
             long fine = System.currentTimeMillis();
             long time = (fine - inizio);
@@ -120,7 +121,7 @@ public class MainPrincipale {
 
             long inizio = System.currentTimeMillis();
 
-            for (int i = 0; i < 550; i++) {
+            //for (int i = 0; i < 550; i++) {
 
                 //System.out.println("----- CloseRegistration.docx -----");
                 //System.out.println("\n");
@@ -171,7 +172,7 @@ public class MainPrincipale {
                 //System.out.println("----- NewSchedule.docx -----");
                 //System.out.println("\n");
 
-                Document document4 = new Document(pathName4);
+                Document document4 = new Document(pathName5);
                 DocumentView documentView4 = new DocumentView();
                 DocumentController documentController4 = new DocumentController(document4, documentView4);
                 quickEarlyMethod1.initCFp();
@@ -181,7 +182,7 @@ public class MainPrincipale {
                 //System.out.println("\n");
                 //System.out.println("\n");
 
-            }
+            //}
             long fine = System.currentTimeMillis();
             long time = (fine - inizio);
 
